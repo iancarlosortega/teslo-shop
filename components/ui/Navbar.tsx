@@ -11,9 +11,12 @@ import {
 	Typography,
 } from '@mui/material';
 import { SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material';
+import { useContext } from 'react';
+import { UiContext } from '../../context';
 
 export const Navbar = () => {
 	const { pathname } = useRouter();
+	const { toggleSideMenu } = useContext(UiContext);
 
 	return (
 		<AppBar>
@@ -69,7 +72,7 @@ export const Navbar = () => {
 					</Link>
 				</NextLink>
 
-				<Button>Menú</Button>
+				<Button onClick={toggleSideMenu}>Menú</Button>
 			</Toolbar>
 		</AppBar>
 	);
