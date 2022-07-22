@@ -1,16 +1,18 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
 	NextPage,
 	GetServerSideProps,
 	GetStaticPaths,
 	GetStaticProps,
 } from 'next';
+import { useRouter } from 'next/router';
 import { Box, Button, Chip, Grid, Typography } from '@mui/material';
 import { ShopLayout } from '../../components/layouts';
 import { ProductSlideshow, SizeSelector } from '../../components/products';
 import { ItemCounter } from '../../components/ui';
 import { dbProducts } from '../../database';
 import { ICartProduct, IProduct, ISize } from '../../interfaces';
+import { CartContext } from '../../context';
 
 interface Props {
 	product: IProduct;
@@ -21,9 +23,14 @@ const ProductPage: NextPage<Props> = ({ product }) => {
 	// const router = useRouter();
 	// const { products: product, isLoading } = useProducts(`/products/${ router.query.slug }`);
 
+	const router = useRouter();
+
+	const { addProductToCart } = useContext(CartContext);
+
 	const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
 		_id: product._id,
 		image: product.images[0],
+		inStock: product.inStock,
 		price: product.price,
 		size: undefined,
 		slug: product.slug,
@@ -47,7 +54,9 @@ const ProductPage: NextPage<Props> = ({ product }) => {
 	};
 
 	const onAddedProduct = () => {
-		console.log(tempCartProduct);
+		if (!tempCartProduct.size) return;
+		addProductToCart(tempCartProduct);
+		router.push('/cart');
 	};
 	return (
 		<ShopLayout title={product.title} pageDescription={product.description}>
@@ -68,7 +77,7 @@ const ProductPage: NextPage<Props> = ({ product }) => {
 							<Typography variant='subtitle2'>Cantidad</Typography>
 							<ItemCounter
 								currentValue={tempCartProduct.quantity}
-								maxValue={product.inStock}
+								maxValue={tempCartProduct.inStock}
 								updatedQuantity={onUpdatedQuantity}
 							/>
 							<SizeSelector

@@ -18,11 +18,12 @@ import {
 	SearchOutlined,
 	ShoppingCartOutlined,
 } from '@mui/icons-material';
-import { UiContext } from '../../context';
+import { CartContext, UiContext } from '../../context';
 
 export const Navbar = () => {
 	const { pathname, push } = useRouter();
 	const { toggleSideMenu } = useContext(UiContext);
+	const { numberOfItems } = useContext(CartContext);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [isSearchOpen, setIsSearchOpen] = useState(false);
 
@@ -126,7 +127,9 @@ export const Navbar = () => {
 				<NextLink href='cart' passHref>
 					<Link>
 						<IconButton>
-							<Badge badgeContent={2} color='secondary'>
+							<Badge
+								badgeContent={numberOfItems > 9 ? '+9' : numberOfItems}
+								color='secondary'>
 								<ShoppingCartOutlined />
 							</Badge>
 						</IconButton>
