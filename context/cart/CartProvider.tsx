@@ -1,22 +1,37 @@
 import { FC, ReactNode, useEffect, useReducer } from 'react';
 import { CartContext, cartReducer } from './';
 import { ICartProduct } from '../../interfaces';
-import Cookie from 'js-cookie';
+import Cookies from 'js-cookie';
 
 export interface CartState {
+	isLoaded: boolean;
 	cart: ICartProduct[];
 	numberOfItems: number;
 	subTotal: number;
 	tax: number;
 	total: number;
+	shippingAddress?: ShippingAdress;
+}
+
+export interface ShippingAdress {
+	firstName: string;
+	lastName: string;
+	address: string;
+	address2?: string;
+	zip: string;
+	city: string;
+	country: string;
+	phone: string;
 }
 
 const CART_INITIAL_STATE: CartState = {
-	cart: Cookie.get('cart') ? JSON.parse(Cookie.get('cart')!) : [],
+	isLoaded: false,
+	cart: Cookies.get('cart') ? JSON.parse(Cookies.get('cart')!) : [],
 	numberOfItems: 0,
 	subTotal: 0,
 	tax: 0,
 	total: 0,
+	shippingAddress: undefined,
 };
 
 interface Props {
@@ -28,8 +43,8 @@ export const CartProvider: FC<Props> = ({ children }) => {
 
 	useEffect(() => {
 		try {
-			const cookieProducts = Cookie.get('cart')
-				? JSON.parse(Cookie.get('cart')!)
+			const cookieProducts = Cookies.get('cart')
+				? JSON.parse(Cookies.get('cart')!)
 				: [];
 			dispatch({
 				type: '[CART] - LoadCart from cookies | storage',
@@ -44,7 +59,26 @@ export const CartProvider: FC<Props> = ({ children }) => {
 	}, []);
 
 	useEffect(() => {
-		Cookie.set('cart', JSON.stringify(state.cart));
+		if (Cookies.get('firstName')) {
+			const shippingAddres = {
+				firstName: Cookies.get('firstName') || '',
+				lastName: Cookies.get('lastName') || '',
+				address: Cookies.get('address') || '',
+				address2: Cookies.get('address2') || '',
+				zip: Cookies.get('zip') || '',
+				city: Cookies.get('city') || '',
+				country: Cookies.get('country') || '',
+				phone: Cookies.get('phone') || '',
+			};
+			dispatch({
+				type: '[CART] - Load Address from cookies',
+				payload: shippingAddres,
+			});
+		}
+	}, []);
+
+	useEffect(() => {
+		Cookies.set('cart', JSON.stringify(state.cart));
 	}, [state.cart]);
 
 	useEffect(() => {
@@ -116,6 +150,21 @@ export const CartProvider: FC<Props> = ({ children }) => {
 		});
 	};
 
+	const updateAddress = (address: ShippingAdress) => {
+		Cookies.set('firstName', address.firstName);
+		Cookies.set('lastName', address.lastName);
+		Cookies.set('address', address.address);
+		Cookies.set('address2', address.address2 || '');
+		Cookies.set('zip', address.zip);
+		Cookies.set('city', address.city);
+		Cookies.set('country', address.country);
+		Cookies.set('phone', address.phone);
+		dispatch({
+			type: '[CART] - Update Address from cookies',
+			payload: address,
+		});
+	};
+
 	return (
 		<CartContext.Provider
 			value={{
@@ -123,6 +172,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
 				addProductToCart,
 				updateCartQuantity,
 				removeCartProduct,
+				updateAddress,
 			}}>
 			{children}
 		</CartContext.Provider>

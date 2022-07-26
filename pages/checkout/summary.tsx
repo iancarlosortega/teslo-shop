@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import NextLink from 'next/link';
 import {
 	Box,
 	Button,
@@ -8,11 +10,18 @@ import {
 	Link,
 	Typography,
 } from '@mui/material';
-import NextLink from 'next/link';
 import { CartList, OrdenSummary } from '../../components/cart';
 import { ShopLayout } from '../../components/layouts';
+import { CartContext } from '../../context';
+import { countries } from '../../utils';
 
 const SummaryPage = () => {
+	const { shippingAddress, numberOfItems } = useContext(CartContext);
+
+	if (!shippingAddress) {
+		return <></>;
+	}
+
 	return (
 		<ShopLayout title='Resumen de orden' pageDescription='Resumen de la orden'>
 			<Typography variant='h1' component='h1'>
@@ -25,7 +34,10 @@ const SummaryPage = () => {
 				<Grid item xs={12} sm={5}>
 					<Card className='summary-card'>
 						<CardContent>
-							<Typography variant='h2'>Resumen (3 productos)</Typography>
+							<Typography variant='h2'>
+								Resumen ({numberOfItems}{' '}
+								{numberOfItems === 1 ? 'producto' : 'productos'})
+							</Typography>
 							<Divider sx={{ my: 1 }} />
 
 							<Box display='flex' justifyContent='space-between'>
@@ -37,11 +49,22 @@ const SummaryPage = () => {
 								</NextLink>
 							</Box>
 
-							<Typography>Ian Carlos Ortega</Typography>
-							<Typography>322 Algún lugar</Typography>
-							<Typography>Avenida Las Americas, Loja</Typography>
-							<Typography>Ecuador</Typography>
-							<Typography>+593 995544833</Typography>
+							<Typography>
+								{shippingAddress?.firstName} {shippingAddress?.lastName}
+							</Typography>
+							<Typography>
+								{shippingAddress?.address}
+								{shippingAddress.address2
+									? `, ${shippingAddress.address2}`
+									: ''}
+							</Typography>
+							<Typography>
+								{shippingAddress?.city}, {shippingAddress?.zip}
+							</Typography>
+							<Typography>
+								{countries.find(c => c.code === shippingAddress?.country)?.name}
+							</Typography>
+							<Typography>{shippingAddress?.phone}</Typography>
 
 							<Divider sx={{ my: 1 }} />
 
