@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import Credentials from 'next-auth/providers/credentials';
+import { dbUsers } from '../../../database';
 export default NextAuth({
 	// Configure one or more authentication providers
 	providers: [
@@ -24,10 +25,22 @@ export default NextAuth({
 				},
 			},
 			async authorize(credentials) {
-				return null;
+				return await dbUsers.checkUserEmailPassword(
+					credentials!.email,
+					credentials!.password
+				);
 			},
 		}),
 	],
+	pages: {
+		signIn: '/auth/login',
+		newUser: '/auth/register',
+	},
+	session: {
+		maxAge: 2592000, //30d
+		strategy: 'jwt',
+		updateAge: 86400, //cada día
+	},
 	callbacks: {
 		async jwt({ token, account, user }) {
 			if (account) {
@@ -39,6 +52,10 @@ export default NextAuth({
 						break;
 
 					case 'oauth':
+						token.user = await dbUsers.oAuthToDbUser(
+							user?.email || '',
+							user?.name || ''
+						);
 						break;
 
 					default:
