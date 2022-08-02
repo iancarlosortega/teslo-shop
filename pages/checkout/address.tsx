@@ -142,6 +142,7 @@ const AddressPage = () => {
 							select
 							variant='filled'
 							label='País'
+							key={Cookies.get('country') || countries[0].code}
 							defaultValue={Cookies.get('country') || countries[0].code}
 							fullWidth
 							{...register('country', {
