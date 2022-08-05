@@ -1,7 +1,9 @@
 import { FC, ReactNode, useEffect, useReducer } from 'react';
-import { CartContext, cartReducer } from './';
-import { ICartProduct } from '../../interfaces';
 import Cookies from 'js-cookie';
+import axios from 'axios';
+import { tesloApi } from '../../api';
+import { CartContext, cartReducer } from './';
+import { ICartProduct, IOrder, ShippingAdress } from '../../interfaces';
 
 export interface CartState {
 	isLoaded: boolean;
@@ -11,17 +13,6 @@ export interface CartState {
 	tax: number;
 	total: number;
 	shippingAddress?: ShippingAdress;
-}
-
-export interface ShippingAdress {
-	firstName: string;
-	lastName: string;
-	address: string;
-	address2?: string;
-	zip: string;
-	city: string;
-	country: string;
-	phone: string;
 }
 
 const CART_INITIAL_STATE: CartState = {
@@ -97,7 +88,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
 			numberOfItems,
 			subTotal,
 			tax: subTotal * taxRate,
-			total: Math.round(subTotal * (taxRate + 1) * 100) / 100,
+			total: subTotal * (taxRate + 1),
 		};
 
 		dispatch({ type: '[CART] - Update order summary', payload: orderSummary });
@@ -165,6 +156,50 @@ export const CartProvider: FC<Props> = ({ children }) => {
 		});
 	};
 
+	const createOrder = async (): Promise<{
+		hasError: boolean;
+		message: string;
+	}> => {
+		if (!state.shippingAddress) {
+			throw new Error('No hay dirección de entrega');
+		}
+
+		const body: IOrder = {
+			orderItems: state.cart.map(p => ({
+				...p,
+				size: p.size!,
+			})),
+			shippingAddress: state.shippingAddress,
+			numberOfItems: state.numberOfItems,
+			subTotal: state.subTotal,
+			tax: state.tax,
+			total: state.total,
+			isPaid: false,
+		};
+
+		try {
+			const { data } = await tesloApi.post<IOrder>('/orders', body);
+			dispatch({ type: '[CART] - Order Complete' });
+			return {
+				hasError: false,
+				message: data._id!,
+			};
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				const { message } = error.response?.data as { message: string };
+				return {
+					hasError: true,
+					message,
+				};
+			}
+
+			return {
+				hasError: true,
+				message: 'Error no controlado, hable con el administrador',
+			};
+		}
+	};
+
 	return (
 		<CartContext.Provider
 			value={{
@@ -173,6 +208,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
 				updateCartQuantity,
 				removeCartProduct,
 				updateAddress,
+				createOrder,
 			}}>
 			{children}
 		</CartContext.Provider>

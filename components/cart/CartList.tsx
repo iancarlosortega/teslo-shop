@@ -11,19 +11,19 @@ import {
 } from '@mui/material';
 import { ItemCounter } from '../ui';
 import { CartContext } from '../../context';
-import { ICartProduct } from '../../interfaces';
+import { ICartProduct, IOrderItem } from '../../interfaces';
 
 interface Props {
 	editable?: boolean;
+	products?: IOrderItem[];
 }
 
-export const CartList: FC<Props> = ({ editable = false }) => {
-	const {
-		cart: productsInCart,
-		updateCartQuantity,
-		removeCartProduct,
-	} = useContext(CartContext);
+export const CartList: FC<Props> = ({ editable = false, products }) => {
+	const { cart, updateCartQuantity, removeCartProduct } =
+		useContext(CartContext);
+
 	const [hasMounted, setHasMounted] = useState(false);
+
 	useEffect(() => {
 		setHasMounted(true);
 	}, []);
@@ -37,10 +37,12 @@ export const CartList: FC<Props> = ({ editable = false }) => {
 		removeCartProduct(product);
 	};
 
+	const productsToShow = products ? products : cart;
+
 	return (
 		<>
 			{hasMounted &&
-				productsInCart.map(product => (
+				productsToShow.map(product => (
 					<Grid
 						container
 						spacing={2}
@@ -69,8 +71,10 @@ export const CartList: FC<Props> = ({ editable = false }) => {
 								{editable ? (
 									<ItemCounter
 										currentValue={product.quantity}
-										maxValue={product.inStock}
-										updatedQuantity={value => onUpdatedQuantity(product, value)}
+										maxValue={10}
+										updatedQuantity={value =>
+											onUpdatedQuantity(product as ICartProduct, value)
+										}
 									/>
 								) : (
 									<Typography variant='h5'>
@@ -91,7 +95,7 @@ export const CartList: FC<Props> = ({ editable = false }) => {
 								<Button
 									variant='text'
 									color='secondary'
-									onClick={() => removeProductInCart(product)}>
+									onClick={() => removeProductInCart(product as ICartProduct)}>
 									Remover
 								</Button>
 							)}
