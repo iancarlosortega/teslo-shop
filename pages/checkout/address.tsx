@@ -115,7 +115,7 @@ const AddressPage = () => {
 					</Grid>
 					<Grid item xs={12} sm={6}>
 						<TextField
-							label='Dirección 2'
+							label='Dirección 2 (opcional)'
 							variant='filled'
 							fullWidth
 							{...register('address2')}
