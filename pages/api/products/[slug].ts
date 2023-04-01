@@ -25,16 +25,21 @@ const getProductBySlug = async (
 	res: NextApiResponse<Data>
 ) => {
 	const { slug } = req.query;
-	console.log(slug);
 	await db.connect();
-	const productBySlug = await Product.findOne({ slug }).lean();
+	const product = await Product.findOne({ slug }).lean();
 	await db.disconnect();
 
-	if (!productBySlug) {
+	if (!product) {
 		return res.status(404).json({
 			message: 'No existe una producto con ese slug ' + slug,
 		});
 	}
 
-	return res.status(200).json(productBySlug);
+	product.images = product.images.map(image => {
+		return image.includes('http')
+			? image
+			: `${process.env.HOST_NAME}/products/${image}`;
+	});
+
+	return res.status(200).json(product);
 };

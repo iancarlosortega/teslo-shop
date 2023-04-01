@@ -9,6 +9,7 @@ import {
 	InputAdornment,
 	List,
 	ListItem,
+	ListItemButton,
 	ListItemIcon,
 	ListItemText,
 	ListSubheader,
@@ -18,6 +19,7 @@ import {
 	AdminPanelSettings,
 	CategoryOutlined,
 	ConfirmationNumberOutlined,
+	DashboardOutlined,
 	EscalatorWarningOutlined,
 	FemaleOutlined,
 	LoginOutlined,
@@ -81,23 +83,23 @@ export const SideMenu = () => {
 					</ListItem>
 					{isLoggedIn && (
 						<>
-							<ListItem button>
+							<ListItemButton>
 								<ListItemIcon>
 									<AccountCircleOutlined />
 								</ListItemIcon>
 								<ListItemText primary={'Perfil'} />
-							</ListItem>
+							</ListItemButton>
 
-							<ListItem button onClick={() => navigateTo('/orders/history')}>
+							<ListItemButton onClick={() => navigateTo('/orders/history')}>
 								<ListItemIcon>
 									<ConfirmationNumberOutlined />
 								</ListItemIcon>
 								<ListItemText primary={'Mis Ordenes'} />
-							</ListItem>
+							</ListItemButton>
 						</>
 					)}
 
-					<ListItem button sx={{ display: { sm: 'none' } }}>
+					<ListItemButton sx={{ display: { sm: 'none' } }}>
 						<ListItemIcon>
 							<MaleOutlined />
 						</ListItemIcon>
@@ -105,9 +107,9 @@ export const SideMenu = () => {
 							onClick={() => navigateTo('/category/men')}
 							primary={'Hombres'}
 						/>
-					</ListItem>
+					</ListItemButton>
 
-					<ListItem button sx={{ display: { sm: 'none' } }}>
+					<ListItemButton sx={{ display: { sm: 'none' } }}>
 						<ListItemIcon>
 							<FemaleOutlined />
 						</ListItemIcon>
@@ -115,9 +117,9 @@ export const SideMenu = () => {
 							onClick={() => navigateTo('/category/women')}
 							primary={'Mujeres'}
 						/>
-					</ListItem>
+					</ListItemButton>
 
-					<ListItem button sx={{ display: { sm: 'none' } }}>
+					<ListItemButton sx={{ display: { sm: 'none' } }}>
 						<ListItemIcon>
 							<EscalatorWarningOutlined />
 						</ListItemIcon>
@@ -125,15 +127,15 @@ export const SideMenu = () => {
 							onClick={() => navigateTo('/category/kids')}
 							primary={'Niños'}
 						/>
-					</ListItem>
+					</ListItemButton>
 
 					{isLoggedIn ? (
-						<ListItem button onClick={logout}>
+						<ListItemButton onClick={logout}>
 							<ListItemIcon>
 								<LoginOutlined />
 							</ListItemIcon>
 							<ListItemText primary={'Salir'} />
-						</ListItem>
+						</ListItemButton>
 					) : (
 						<ListItem
 							button
@@ -151,25 +153,33 @@ export const SideMenu = () => {
 							<Divider />
 							<ListSubheader>Admin Panel</ListSubheader>
 
-							<ListItem button>
+							<ListItemButton onClick={() => navigateTo('/admin/dashboard')}>
+								<ListItemIcon>
+									<DashboardOutlined />
+								</ListItemIcon>
+								<ListItemText primary={'Dashboard'} />
+							</ListItemButton>
+
+							<ListItemButton onClick={() => navigateTo('/admin/products')}>
 								<ListItemIcon>
 									<CategoryOutlined />
 								</ListItemIcon>
 								<ListItemText primary={'Productos'} />
-							</ListItem>
-							<ListItem button>
+							</ListItemButton>
+
+							<ListItemButton onClick={() => navigateTo('/admin/orders')}>
 								<ListItemIcon>
 									<ConfirmationNumberOutlined />
 								</ListItemIcon>
 								<ListItemText primary={'Ordenes'} />
-							</ListItem>
+							</ListItemButton>
 
-							<ListItem button>
+							<ListItemButton onClick={() => navigateTo('/admin/users')}>
 								<ListItemIcon>
 									<AdminPanelSettings />
 								</ListItemIcon>
 								<ListItemText primary={'Usuarios'} />
-							</ListItem>
+							</ListItemButton>
 						</>
 					)}
 				</List>
