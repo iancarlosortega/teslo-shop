@@ -4,19 +4,10 @@ import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import { getSession, signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
-import {
-	Box,
-	Button,
-	Chip,
-	Grid,
-	Link,
-	TextField,
-	Typography,
-} from '@mui/material';
+import { Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
 import { AuthLayout } from '../../components/layouts';
 import { AuthContext } from '../../context';
 import { validations } from '../../utils';
-import { ErrorOutline } from '@mui/icons-material';
 
 type FormData = {
 	name: string;
@@ -65,13 +56,13 @@ const RegisterPage = () => {
 							<Typography variant='h1' component='h1'>
 								Crear cuenta
 							</Typography>
-							<Chip
+							{/* <Chip
 								sx={{ display: showError ? 'flex' : 'none' }}
 								label={errorMessage}
 								color='error'
 								icon={<ErrorOutline />}
 								className='fadeIn'
-							/>
+							/> */}
 						</Grid>
 						<Grid item xs={12}>
 							<TextField

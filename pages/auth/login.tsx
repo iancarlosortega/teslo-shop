@@ -5,7 +5,6 @@ import NextLink from 'next/link';
 import {
 	Box,
 	Button,
-	Chip,
 	Divider,
 	Grid,
 	Link,
@@ -17,7 +16,6 @@ import { AuthLayout } from '../../components/layouts';
 // import { AuthContext } from '../../context';
 import { useForm } from 'react-hook-form';
 import { validations } from '../../utils';
-import { ErrorOutline } from '@mui/icons-material';
 
 type FormData = {
 	email: string;
@@ -68,13 +66,13 @@ const LoginPage = () => {
 							<Typography variant='h1' component='h1'>
 								Iniciar Sesión
 							</Typography>
-							<Chip
+							{/* <Chip
 								sx={{ display: showError ? 'flex' : 'none' }}
 								label='Correo o contraseña incorrectos'
 								color='error'
 								icon={<ErrorOutline />}
 								className='fadeIn'
-							/>
+							/> */}
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
