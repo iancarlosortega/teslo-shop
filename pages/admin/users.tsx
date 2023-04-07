@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
-import { tesloApi } from '../../api';
+import { tesloApi } from '../../axiosApi';
 import { Grid, MenuItem, Select } from '@mui/material';
 import { PeopleOutline } from '@mui/icons-material';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
