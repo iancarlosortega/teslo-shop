@@ -59,6 +59,7 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [newTagValue, setNewTagValue] = useState('');
 	const [isSaving, setIsSaving] = useState(false);
+	const [slugValue, setSlugValue] = useState('');
 
 	const {
 		register,
@@ -82,6 +83,7 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
 						.toLocaleLowerCase() || '';
 
 				setValue('slug', newSlug);
+				setSlugValue(newSlug);
 			}
 		});
 
@@ -143,25 +145,26 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
 	};
 
 	const onSubmit = async (formData: FormData) => {
-		if (formData.images.length < 2) return alert('Mínimo 2 imágenes');
+		console.log(formData);
+		// if (formData.images.length < 2) return alert('Mínimo 2 imágenes');
 
-		setIsSaving(true);
-		try {
-			const { data } = await tesloApi({
-				url: '/admin/products',
-				method: formData._id ? 'PUT' : 'POST',
-				data: formData,
-			});
-			console.log(data);
-			if (!formData._id) {
-				router.replace(`/admin/products/${formData.slug}`);
-			} else {
-				setIsSaving(false);
-			}
-		} catch (error) {
-			console.log(error);
-			setIsSaving(false);
-		}
+		// setIsSaving(true);
+		// try {
+		// 	const { data } = await tesloApi({
+		// 		url: '/admin/products',
+		// 		method: formData._id ? 'PUT' : 'POST',
+		// 		data: formData,
+		// 	});
+		// 	console.log(data);
+		// 	if (!formData._id) {
+		// 		router.replace(`/admin/products/${formData.slug}`);
+		// 	} else {
+		// 		setIsSaving(false);
+		// 	}
+		// } catch (error) {
+		// 	console.log(error);
+		// 	setIsSaving(false);
+		// }
 	};
 
 	return (
@@ -299,6 +302,7 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
 							label='Slug - URL'
 							variant='filled'
 							fullWidth
+							value={slugValue}
 							sx={{ mb: 1 }}
 							{...register('slug', {
 								required: 'Este campo es requerido',
@@ -306,6 +310,9 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
 									val.trim().includes(' ')
 										? 'No puede tener espacios en blanco'
 										: undefined,
+								onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
+									setSlugValue(event.target.value);
+								},
 							})}
 							error={!!errors.slug}
 							helperText={errors.slug?.message}
