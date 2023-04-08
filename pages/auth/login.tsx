@@ -12,13 +12,6 @@ import {
 	TextField,
 	Typography,
 } from '@mui/material';
-// import Grid from '@mui/material/Grid';
-// import Box from '@mui/material/Box';
-// import Button from '@mui/material/Button';
-// import Divider from '@mui/material/Divider';
-// import Link from '@mui/material/Link';
-// import TextField from '@mui/material/TextField';
-// import Typography from '@mui/material/Typography';
 import { ErrorOutline } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { AuthLayout } from '../../components/layouts';
@@ -166,25 +159,26 @@ const LoginPage = () => {
 	);
 };
 
-// export const getServerSideProps: GetServerSideProps = async ({
-// 	req,
-// 	query,
-// }) => {
-// 	const session = await getSession({ req });
-// 	const { p = '/' } = query;
+export const getServerSideProps: GetServerSideProps = async ({
+	req,
+	query,
+}) => {
+	const session = await getSession({ req });
+	console.log(session);
+	const { p = '/' } = query;
 
-// 	if (session) {
-// 		return {
-// 			redirect: {
-// 				destination: p.toString(),
-// 				permanent: false,
-// 			},
-// 		};
-// 	}
+	if (session) {
+		return {
+			redirect: {
+				destination: p.toString(),
+				permanent: false,
+			},
+		};
+	}
 
-// 	return {
-// 		props: {},
-// 	};
-// };
+	return {
+		props: {},
+	};
+};
 
 export default LoginPage;
