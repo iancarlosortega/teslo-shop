@@ -46,41 +46,31 @@ export const Navbar = () => {
 	return (
 		<AppBar>
 			<Toolbar>
-				<NextLink href='/' passHref>
-					<Link display='flex' alignItems='center'>
-						<Typography variant='h6'>Teslo |</Typography>
-						<Typography sx={{ ml: 0.5 }}>Shop</Typography>
-					</Link>
-				</NextLink>
+				<Link href='/' component={NextLink} display='flex' alignItems='center'>
+					<Typography variant='h6'>Teslo |</Typography>
+					<Typography sx={{ ml: 0.5 }}>Shop</Typography>
+				</Link>
 
 				<Box flex={1} />
 
 				<Box
 					className='fadeIn'
 					sx={{ display: isSearchOpen ? 'none' : { xs: 'none', sm: 'block' } }}>
-					<NextLink href='/category/men' passHref>
-						<Link>
-							<Button color={pathname == '/category/men' ? 'primary' : 'info'}>
-								Hombres
-							</Button>
-						</Link>
-					</NextLink>
-					<NextLink href='/category/women' passHref>
-						<Link>
-							<Button
-								color={pathname === '/category/women' ? 'primary' : 'info'}>
-								Mujeres
-							</Button>
-						</Link>
-					</NextLink>
-					<NextLink href='/category/kids' passHref>
-						<Link>
-							<Button
-								color={pathname === '/category/kids' ? 'primary' : 'info'}>
-								Niños
-							</Button>
-						</Link>
-					</NextLink>
+					<Link href='/category/men' component={NextLink}>
+						<Button color={pathname == '/category/men' ? 'primary' : 'info'}>
+							Hombres
+						</Button>
+					</Link>
+					<Link href='/category/women' component={NextLink}>
+						<Button color={pathname === '/category/women' ? 'primary' : 'info'}>
+							Mujeres
+						</Button>
+					</Link>
+					<Link href='/category/kids' component={NextLink}>
+						<Button color={pathname === '/category/kids' ? 'primary' : 'info'}>
+							Niños
+						</Button>
+					</Link>
 				</Box>
 
 				<Box flex={1} />
@@ -124,17 +114,15 @@ export const Navbar = () => {
 					<SearchOutlined />
 				</IconButton>
 
-				<NextLink href='/cart' passHref>
-					<Link>
-						<IconButton>
-							<Badge
-								badgeContent={numberOfItems > 9 ? '+9' : numberOfItems}
-								color='secondary'>
-								<ShoppingCartOutlined />
-							</Badge>
-						</IconButton>
-					</Link>
-				</NextLink>
+				<Link href='/cart' component={NextLink}>
+					<IconButton>
+						<Badge
+							badgeContent={numberOfItems > 9 ? '+9' : numberOfItems}
+							color='secondary'>
+							<ShoppingCartOutlined />
+						</Badge>
+					</IconButton>
+				</Link>
 
 				<Button onClick={toggleSideMenu}>Menú</Button>
 			</Toolbar>

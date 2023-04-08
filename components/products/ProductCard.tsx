@@ -32,32 +32,32 @@ export const ProductCard: FC<Props> = ({ product }) => {
 			xs={6}
 			sm={4}>
 			<Card>
-				<NextLink href={`/product/${product.slug}`} passHref prefetch={false}>
-					<Link>
-						<CardActionArea>
-							{product.inStock === 0 && (
-								<Chip
-									color='primary'
-									label='No hay disponibles'
-									sx={{
-										position: 'absolute',
-										zIndex: 99,
-										top: '10px',
-										left: '10px',
-									}}
-								/>
-							)}
-
-							<CardMedia
-								component='img'
-								className='fadeIn'
-								image={productImage}
-								alt={product.title}
-								onLoad={() => setIsImageLoaded(true)}
+				<Link
+					href={`/product/${product.slug}`}
+					component={NextLink}
+					prefetch={false}>
+					<CardActionArea>
+						{product.inStock === 0 && (
+							<Chip
+								color='primary'
+								label='No hay disponibles'
+								sx={{
+									position: 'absolute',
+									zIndex: 99,
+									top: '10px',
+									left: '10px',
+								}}
 							/>
-						</CardActionArea>
-					</Link>
-				</NextLink>
+						)}
+						<CardMedia
+							component='img'
+							className='fadeIn'
+							image={productImage}
+							alt={product.title}
+							onLoad={() => setIsImageLoaded(true)}
+						/>
+					</CardActionArea>
+				</Link>
 			</Card>
 
 			<Box

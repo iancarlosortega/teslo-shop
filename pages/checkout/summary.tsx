@@ -70,9 +70,12 @@ const SummaryPage = () => {
 								<Typography variant='subtitle1'>
 									Dirección de entrega
 								</Typography>
-								<NextLink href='/checkout/address' passHref>
-									<Link underline='always'>Editar</Link>
-								</NextLink>
+								<Link
+									href='/checkout/address'
+									component={NextLink}
+									underline='always'>
+									Editar
+								</Link>
 							</Box>
 
 							<Typography>
@@ -93,9 +96,9 @@ const SummaryPage = () => {
 							<Divider sx={{ my: 1 }} />
 
 							<Box display='flex' justifyContent='end'>
-								<NextLink href='/cart' passHref>
-									<Link underline='always'>Editar</Link>
-								</NextLink>
+								<Link href='/cart' component={NextLink} underline='always'>
+									Editar
+								</Link>
 							</Box>
 
 							<OrdenSummary />

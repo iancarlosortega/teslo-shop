@@ -1,7 +1,7 @@
 import { GetServerSideProps, NextPage } from 'next';
 import NextLink from 'next/link';
 import { Chip, Grid, Link, Typography } from '@mui/material';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { ShopLayout } from '../../components/layouts';
 import { getSession } from 'next-auth/react';
 import { dbOrders } from '../../database';
@@ -14,7 +14,7 @@ const columns: GridColDef[] = [
 		headerName: 'Pagada',
 		description: 'Muestra información si está pagada la orden o no',
 		width: 200,
-		renderCell: (params: GridValueGetterParams) => {
+		renderCell: (params: GridRenderCellParams) => {
 			return params.row.paid ? (
 				<Chip color='success' label='Pagada' variant='outlined' />
 			) : (
@@ -27,11 +27,14 @@ const columns: GridColDef[] = [
 		headerName: 'Ver Orden',
 		width: 200,
 		sortable: false,
-		renderCell: (params: GridValueGetterParams) => {
+		renderCell: (params: GridRenderCellParams) => {
 			return (
-				<NextLink href={`${params.row.orderId}`} passHref>
-					<Link underline='always'>Ver Orden</Link>
-				</NextLink>
+				<Link
+					href={`${params.row.orderId}`}
+					component={NextLink}
+					underline='always'>
+					Ver Orden
+				</Link>
 			);
 		},
 	},
@@ -56,12 +59,7 @@ const HistoryPage: NextPage<Props> = ({ orders }) => {
 			</Typography>
 			<Grid container className='fadeIn'>
 				<Grid item xs={12} sx={{ height: 650, width: '100%' }}>
-					<DataGrid
-						rows={orders}
-						columns={columns}
-						pageSize={10}
-						rowsPerPageOptions={[10]}
-					/>
+					<DataGrid rows={orders} columns={columns} pageSizeOptions={[10]} />
 				</Grid>
 			</Grid>
 		</ShopLayout>
