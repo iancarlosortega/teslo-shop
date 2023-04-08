@@ -2,21 +2,24 @@ import { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { getSession, signIn, getProviders } from 'next-auth/react';
 import NextLink from 'next/link';
-// import {
-// 	Box,
-// 	Button,
-// 	Divider,
-// 	Link,
-// 	TextField,
-// 	Typography,
-// } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import Link from '@mui/material/Link';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import {
+	Box,
+	Button,
+	Chip,
+	Grid,
+	Divider,
+	Link,
+	TextField,
+	Typography,
+} from '@mui/material';
+// import Grid from '@mui/material/Grid';
+// import Box from '@mui/material/Box';
+// import Button from '@mui/material/Button';
+// import Divider from '@mui/material/Divider';
+// import Link from '@mui/material/Link';
+// import TextField from '@mui/material/TextField';
+// import Typography from '@mui/material/Typography';
+import { ErrorOutline } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { AuthLayout } from '../../components/layouts';
 // import { AuthContext } from '../../context';
@@ -72,13 +75,13 @@ const LoginPage = () => {
 							<Typography variant='h1' component='h1'>
 								Iniciar Sesión
 							</Typography>
-							{/* <Chip
+							<Chip
 								sx={{ display: showError ? 'flex' : 'none' }}
 								label='Correo o contraseña incorrectos'
 								color='error'
 								icon={<ErrorOutline />}
 								className='fadeIn'
-							/> */}
+							/>
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
