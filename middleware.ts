@@ -7,14 +7,11 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
 		secret: process.env.NEXTAUTH_SECRET,
 	});
 	const { origin } = req.nextUrl.clone();
+	const requestedPage = req.nextUrl.pathname;
 	const validRoles = ['admin', 'super-user'];
 
-	if (req.nextUrl.pathname.startsWith('/checkout')) {
-		if (!session) {
-			const requestedPage = req.nextUrl.pathname;
-
-			return NextResponse.redirect(`${origin}/auth/login?p=${requestedPage}`);
-		}
+	if (!session) {
+		return NextResponse.redirect(`${origin}/auth/login?p=${requestedPage}`);
 	}
 
 	if (req.nextUrl.pathname.startsWith('/admin')) {

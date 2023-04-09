@@ -30,9 +30,12 @@ const columns: GridColDef[] = [
 		width: 250,
 		renderCell: ({ row }: GridRenderCellParams) => {
 			return (
-				<NextLink href={`/admin/products/${row.slug}`} passHref>
-					<Link underline='always'>{row.title}</Link>
-				</NextLink>
+				<Link
+					href={`/admin/products/${row.slug}`}
+					component={NextLink}
+					underline='always'>
+					{row.title}
+				</Link>
 			);
 		},
 	},
@@ -91,7 +94,12 @@ const ProductsPage = () => {
 			</Box>
 			<Grid container className='fadeIn'>
 				<Grid item xs={12} sx={{ height: 650, width: '100%' }}>
-					<DataGrid rows={rows} columns={columns} pageSizeOptions={[10]} />
+					<DataGrid
+						rows={rows}
+						columns={columns}
+						autoPageSize={true}
+						pageSizeOptions={[5, 10, 25]}
+					/>
 				</Grid>
 			</Grid>
 		</AdminLayout>

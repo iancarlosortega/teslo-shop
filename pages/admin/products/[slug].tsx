@@ -145,26 +145,24 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
 	};
 
 	const onSubmit = async (formData: FormData) => {
-		console.log(formData);
-		// if (formData.images.length < 2) return alert('Mínimo 2 imágenes');
+		if (formData.images.length < 2) return alert('Mínimo 2 imágenes');
 
-		// setIsSaving(true);
-		// try {
-		// 	const { data } = await tesloApi({
-		// 		url: '/admin/products',
-		// 		method: formData._id ? 'PUT' : 'POST',
-		// 		data: formData,
-		// 	});
-		// 	console.log(data);
-		// 	if (!formData._id) {
-		// 		router.replace(`/admin/products/${formData.slug}`);
-		// 	} else {
-		// 		setIsSaving(false);
-		// 	}
-		// } catch (error) {
-		// 	console.log(error);
-		// 	setIsSaving(false);
-		// }
+		setIsSaving(true);
+		try {
+			const { data } = await tesloApi({
+				url: '/admin/products',
+				method: formData._id ? 'PUT' : 'POST',
+				data: formData,
+			});
+			if (!formData._id) {
+				router.replace(`/admin/products/${formData.slug}`);
+			} else {
+				setIsSaving(false);
+			}
+		} catch (error) {
+			console.log(error);
+			setIsSaving(false);
+		}
 	};
 
 	return (

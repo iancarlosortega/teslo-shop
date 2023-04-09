@@ -59,7 +59,12 @@ const HistoryPage: NextPage<Props> = ({ orders }) => {
 			</Typography>
 			<Grid container className='fadeIn'>
 				<Grid item xs={12} sx={{ height: 650, width: '100%' }}>
-					<DataGrid rows={orders} columns={columns} pageSizeOptions={[10]} />
+					<DataGrid
+						rows={orders}
+						columns={columns}
+						autoPageSize={true}
+						pageSizeOptions={[5, 10, 25]}
+					/>
 				</Grid>
 			</Grid>
 		</ShopLayout>

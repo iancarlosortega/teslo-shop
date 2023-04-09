@@ -3,7 +3,7 @@ import useSWR from 'swr';
 import { tesloApi } from '../../axiosApi';
 import { Grid, MenuItem, Select } from '@mui/material';
 import { PeopleOutline } from '@mui/icons-material';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { AdminLayout } from '../../components/layouts';
 import { FullScreenLoading } from '../../components/ui';
 import { IUser } from '../../interfaces';
@@ -57,7 +57,7 @@ const UsersPage = () => {
 			field: 'role',
 			headerName: 'Rol',
 			width: 300,
-			renderCell: ({ row }: GridValueGetterParams) => {
+			renderCell: ({ row }: GridRenderCellParams) => {
 				return (
 					<Select
 						value={row.role}
@@ -89,8 +89,8 @@ const UsersPage = () => {
 					<DataGrid
 						rows={rows}
 						columns={columns}
-						pageSize={10}
-						rowsPerPageOptions={[10]}
+						autoPageSize={true}
+						pageSizeOptions={[5, 10, 25]}
 					/>
 				</Grid>
 			</Grid>

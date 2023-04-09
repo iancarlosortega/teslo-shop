@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { Chip, Grid } from '@mui/material';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { ConfirmationNumberOutlined } from '@mui/icons-material';
 import { AdminLayout } from '../../../components/layouts';
 import { FullScreenLoading } from '../../../components/ui';
@@ -31,7 +31,7 @@ const columns: GridColDef[] = [
 		field: 'isPaid',
 		headerName: 'Pagada',
 		width: 250,
-		renderCell: ({ row }: GridValueGetterParams) => {
+		renderCell: ({ row }: GridRenderCellParams) => {
 			return row.isPaid ? (
 				<Chip variant='outlined' label='Pagada' color='success' />
 			) : (
@@ -49,7 +49,7 @@ const columns: GridColDef[] = [
 		field: 'check',
 		headerName: 'Ver orden',
 		width: 200,
-		renderCell: ({ row }: GridValueGetterParams) => {
+		renderCell: ({ row }: GridRenderCellParams) => {
 			return (
 				<a href={`/admin/orders/${row.id}`} target='_blank' rel='noreferrer'>
 					Ver Orden
@@ -89,8 +89,8 @@ const OrdersPage = () => {
 					<DataGrid
 						rows={rows}
 						columns={columns}
-						pageSize={10}
-						rowsPerPageOptions={[10]}
+						autoPageSize={true}
+						pageSizeOptions={[5, 10, 25]}
 					/>
 				</Grid>
 			</Grid>
